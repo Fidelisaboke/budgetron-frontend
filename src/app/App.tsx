@@ -1,4 +1,5 @@
 import { Routes, Route, Link } from 'react-router'
+import LoginForm from "../pages/Login/LoginForm.tsx";
 
 export default function App(){
     return (
@@ -9,7 +10,8 @@ export default function App(){
                 <Link to="/about" className="text-blue-500 underline">About</Link>
             </nav>
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<LoginForm />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/about" element={<About />} />
             </Routes>
         </div>
