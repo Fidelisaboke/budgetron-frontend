@@ -10,7 +10,7 @@ export default function App(){
             </nav>
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/" element={<About />} />
+                <Route path="/about" element={<About />} />
             </Routes>
         </div>
     );
