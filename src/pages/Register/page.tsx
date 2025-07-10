@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import PATHS from "@/routes/paths";
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
@@ -126,7 +127,7 @@ export default function RegisterPage() {
 
                         <p className="text-sm text-gray-600 text-center">
                             Already have an account?
-                            <Link to="/" className="text-teal-600 hover:underline hover:text-teal-700 ml-1">
+                            <Link to={PATHS.AUTH.LOGIN} className="text-teal-600 hover:underline hover:text-teal-700 ml-1">
                                 Login
                             </Link>
                         </p>

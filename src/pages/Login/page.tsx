@@ -11,6 +11,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FaGoogle, FaGithub } from "react-icons/fa"
 import { type LoginSchema, loginSchema } from '@/schemas/login'
+import PATHS from '@/routes/paths'
 
 
 export default function LoginPage() {
@@ -113,7 +114,7 @@ export default function LoginPage() {
 
                         <p className="text-sm text-gray-600 text-center">
                             Don&apos;t have an account?
-                            <Link to="/register" className="text-teal-600 hover:underline hover:text-teal-700 ml-1">
+                            <Link to={PATHS.AUTH.REGISTER} className="text-teal-600 hover:underline hover:text-teal-700 ml-1">
                                 Register
                             </Link>
                         </p>
