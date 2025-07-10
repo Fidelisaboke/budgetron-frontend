@@ -1,14 +1,13 @@
-import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form.tsx'
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form.tsx'
 import { Input } from '@/components/ui/input'
 import AppLayout from '@/components/AppLayout'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
-import { Eye, EyeOff, Mail } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FaGoogle, FaGithub } from "react-icons/fa"
 
@@ -52,8 +51,7 @@ export default function LoginPage() {
                         <div className="w-full h-[1px] bg-gray-300 my-4"></div>
                     </div>
 
-
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         {/* Email Address */}
                         <FormField
                             control={form.control}
@@ -97,7 +95,7 @@ export default function LoginPage() {
                             )}
                         />
 
-                        <div className="flex flex-row flex-col items-center justify-between">
+                        <div className="flex flex-row items-center justify-between">
                             <div className="flex items-center">
                                 <Checkbox id="remember" />
                                 <Label htmlFor="remember" className="ml-2">Remember me</Label>
