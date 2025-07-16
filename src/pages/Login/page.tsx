@@ -12,7 +12,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FaGoogle, FaGithub } from "react-icons/fa"
 import { type LoginSchema, loginSchema } from '@/schemas/login'
 import PATHS from '@/routes/paths'
-
+import { useAuth } from '@/contexts/AuthContext'
+import apiClient from '@/api/apiClient'
+import API_ENDPOINTS from '@/api/apiEndpoints'
+import { toast } from 'sonner'
+import { Loader2 } from 'lucide-react'
 
 export default function LoginPage() {
     const form = useForm<LoginSchema>({
@@ -23,9 +27,21 @@ export default function LoginPage() {
         },
     });
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const { login } = useAuth();
 
-    const onSubmit = (data: LoginSchema) => {
-        //
+    const onSubmit = async (data: LoginSchema) => {
+        try {
+            setIsLoading(true);
+            const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, data);
+            login(response.data.accessToken);
+        } catch (error: any) {
+            console.log(error);
+            const apiError = error?.response?.data?.errors[0] || 'An error occurred';
+            toast.error(apiError);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -108,8 +124,8 @@ export default function LoginPage() {
                             </Link>
                         </div>
 
-                        <Button type="submit" className="w-full bg-teal-600 hover:bg-teal-700 text-white">
-                            Log In
+                        <Button type="submit" className="w-full bg-teal-600 hover:bg-teal-700 text-white" disabled={isLoading}>
+                            {isLoading ? <Loader2 className="animate-spin" /> : 'Log In'}
                         </Button>
 
                         <p className="text-sm text-gray-600 text-center">
