@@ -2,7 +2,7 @@ import axios from "axios";
 
 // A client for the API.
 const apiClient = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: import.meta.env.VITE_BACKEND_URL,
     headers: {
         "Content-Type": "application/json",
     },
@@ -10,7 +10,7 @@ const apiClient = axios.create({
 
 // Request interceptor.
 apiClient.interceptors.request.use((config) => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem("access_token");
     if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`
     }
@@ -22,7 +22,7 @@ apiClient.interceptors.response.use(
     (response) => response, 
     (error) => {
         if (error.response.status === 401) {
-            localStorage.removeItem("accessToken");
+            localStorage.removeItem("access_token");
             window.location.href = "/";
         }
         return Promise.reject(error);

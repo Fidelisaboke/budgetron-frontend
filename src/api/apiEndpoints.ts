@@ -5,6 +5,7 @@ const API_ENDPOINTS = {
     AUTH: {
         LOGIN: `${BASE_URL}/auth/login/`,
         REGISTER: `${BASE_URL}/auth/register/`,
+        PROFILE: `${BASE_URL}/auth/me/`,
     },
 } as const;
 

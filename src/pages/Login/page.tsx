@@ -34,7 +34,7 @@ export default function LoginPage() {
         try {
             setIsLoading(true);
             const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, data);
-            login(response.data.accessToken);
+            login(response.data.access_token);
         } catch (error: any) {
             console.log(error);
             const apiError = error?.response?.data?.errors[0] || 'An error occurred';
