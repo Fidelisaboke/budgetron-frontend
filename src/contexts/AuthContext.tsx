@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const accessToken = localStorage.getItem('access_token');
         if (accessToken) {
-            apiClient.get(API_ENDPOINTS.AUTH.PROFILE)
+            apiClient.get<User>(API_ENDPOINTS.AUTH.PROFILE)
             .then((response) => {
                 setUser(response.data);
                 setIsAuthenticated(true);
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsAuthenticated(true);
         setLoading(true);
         try {
-            const response = await apiClient.get(API_ENDPOINTS.AUTH.PROFILE);
+            const response = await apiClient.get<User>(API_ENDPOINTS.AUTH.PROFILE);
             console.log(response.data);
             setUser(response.data);
             navigate(PATHS.APP.DASHBOARD);
