@@ -9,7 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Eye, EyeOff } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FaGoogle, FaGithub } from "react-icons/fa"
+import { FaGoogle } from "react-icons/fa"
 import { type LoginSchema, loginSchema } from '@/schemas/login'
 import PATHS from '@/routes/paths'
 import { useAuth } from '@/contexts/AuthContext'
@@ -36,7 +36,6 @@ export default function LoginPage() {
             const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, data);
             login(response.data.access_token);
         } catch (error: any) {
-            console.log(error);
             const apiError = error?.response?.data?.errors[0] || 'An error occurred';
             toast.error(apiError);
         } finally {
@@ -55,10 +54,6 @@ export default function LoginPage() {
                         <Button type="button" className="mb-2 w-full border border-gray-300 bg-gray-100 hover:bg-gray-200 text-gray-900">
                             <FaGoogle />
                             Sign in with Google
-                        </Button>
-                        <Button type="button" className="mb-2 w-full border border-gray-300 bg-gray-100 hover:bg-gray-200 text-gray-900">
-                            <FaGithub />
-                            Sign in with GitHub
                         </Button>
                     </div>
                     <div className="flex items-center justify-center">
