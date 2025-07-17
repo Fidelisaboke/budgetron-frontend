@@ -5,12 +5,12 @@ const PATHS = {
     },
     APP: {
         DASHBOARD: "/dashboard",
-        PROFILE: "/profile",
-        SETTINGS: "/settings",
+        CATEGORIES: "/categories",
         BUDGETS: "/budgets",
         TRANSACTIONS: "/transactions",
-        CATEGORIES: "/categories",
         REPORTS: "/reports",
+        PROFILE: "/profile",
+        SETTINGS: "/settings",
     }
 } as const;
 
