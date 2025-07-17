@@ -1,18 +1,24 @@
 import AppLayout from "@/components/AppLayout";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form";
 import { type RegisterSchema, registerSchema } from "@/schemas/register";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 import PATHS from "@/routes/paths";
+import apiClient from "@/api/apiClient";
+import API_ENDPOINTS from "@/api/apiEndpoints";
+import { toast } from "sonner";
+import { handleFormErrors } from "@/utils/formErrorHandler";
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const form = useForm<RegisterSchema>({
         resolver: zodResolver(registerSchema),
@@ -20,14 +26,26 @@ export default function RegisterPage() {
             username: "",
             email: "",
             password: "",
-            confirmPassword: "",
+            confirm_password: "",
         },
     });
 
-    const onSubmit = (data: RegisterSchema) => {
-        console.log(data);
+    const onSubmit = async (data: RegisterSchema) => {
+        try {
+            setIsLoading(true);
+            const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, data);
+            if (response.status === 201) {
+                toast.success("Registered successfully. Please login to continue.");
+                navigate(PATHS.AUTH.LOGIN);
+            }
+        } catch (error: any) {
+            handleFormErrors(error, form);
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        }
     }
-    
+
     return (
         <AppLayout>
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
@@ -71,12 +89,15 @@ export default function RegisterPage() {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
+                                    <FormDescription className="text-gray-500 text-sm mb-2">
+                                        Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.
+                                    </FormDescription>
                                     <FormControl>
                                         <div className="relative">
-                                            <Input 
-                                                type={showPassword ? "text" : "password"} 
-                                                placeholder="********" 
-                                                {...field} 
+                                            <Input
+                                                type={showPassword ? "text" : "password"}
+                                                placeholder="********"
+                                                {...field}
                                             />
                                             <button
                                                 type="button"
@@ -95,7 +116,7 @@ export default function RegisterPage() {
                         {/* Confirm Password */}
                         <FormField
                             control={form.control}
-                            name="confirmPassword"
+                            name="confirm_password"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Confirm Password</FormLabel>
@@ -103,8 +124,8 @@ export default function RegisterPage() {
                                         <div className="relative">
                                             <Input
                                                 type={showConfirmPassword ? "text" : "password"}
-                                                placeholder="********" 
-                                                {...field} 
+                                                placeholder="********"
+                                                {...field}
                                             />
                                             <button
                                                 type="button"
@@ -121,8 +142,8 @@ export default function RegisterPage() {
                         />
 
                         {/* Submit Button */}
-                        <Button type="submit" className="w-full bg-teal-600 hover:bg-teal-700 text-white">
-                            Create Account
+                        <Button type="submit" disabled={isLoading} className="w-full bg-teal-600 hover:bg-teal-700 text-white">
+                            {isLoading ? <Loader2 className="animate-spin" /> : "Create Account"}
                         </Button>
 
                         <p className="text-sm text-gray-600 text-center">
@@ -134,6 +155,6 @@ export default function RegisterPage() {
                     </form>
                 </Form>
             </div>
-</AppLayout>
+        </AppLayout>
     )
 }

@@ -13,9 +13,9 @@ export const registerSchema = z.object({
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
             message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
         }),
-    confirmPassword: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
-}).refine((data) => data.password === data.confirmPassword, {
-    path: ['confirmPassword'],
+    confirm_password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
+}).refine((data) => data.password === data.confirm_password, {
+    path: ['confirm_password'],
     message: 'Passwords do not match',
 })
 
