@@ -7,21 +7,26 @@ import Dashboard from '@/pages/Dashboard/page';
 import PATHS from '@/routes/paths';
 import { Toaster } from 'sonner';
 import NotFoundPage from '@/pages/NotFound/page.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export default function App(){
-    return (
-      <>
+  const queryClient = new QueryClient();
+  
+  return (
+    <>
       <Toaster position="top-center" richColors />
-      <AuthProvider>
-         <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path={PATHS.APP.DASHBOARD} element={<Dashboard />} />
-            </Route>
-            <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </AuthProvider>
-      </>
-    );
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Routes>
+              <Route path="/" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path={PATHS.APP.DASHBOARD} element={<Dashboard />} />
+              </Route>
+              <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </AuthProvider>
+      </QueryClientProvider>
+    </>
+  );
 }

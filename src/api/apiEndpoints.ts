@@ -5,6 +5,7 @@ const API_ENDPOINTS = {
         REGISTER: '/auth/register/',
         PROFILE: '/auth/me/',
     },
+    USERS: '/users/',
 } as const;
 
 export default API_ENDPOINTS;
