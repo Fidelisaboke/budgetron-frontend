@@ -40,7 +40,6 @@ export default function RegisterPage() {
             }
         } catch (error: any) {
             handleFormErrors(error, form);
-            console.log(error);
         } finally {
             setIsLoading(false);
         }
