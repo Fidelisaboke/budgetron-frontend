@@ -1,4 +1,4 @@
-import AppLayout from "@/components/AppLayout";
+import AuthLayout from "@/components/AuthLayout.tsx";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form";
 import { type RegisterSchema, registerSchema } from "@/schemas/register";
 import { useForm } from "react-hook-form";
@@ -46,7 +46,7 @@ export default function RegisterPage() {
     }
 
     return (
-        <AppLayout>
+        <AuthLayout>
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
                 <Form {...form}>
                     <h2 className="text-2xl font-bold mb-4 text-center">Create an account</h2>
@@ -154,6 +154,6 @@ export default function RegisterPage() {
                     </form>
                 </Form>
             </div>
-        </AppLayout>
+        </AuthLayout>
     )
 }

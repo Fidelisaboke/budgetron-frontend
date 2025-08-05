@@ -1,6 +1,6 @@
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form.tsx'
 import { Input } from '@/components/ui/input'
-import AppLayout from '@/components/AppLayout'
+import AuthLayout from '@/components/AuthLayout.tsx'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 import { useState } from 'react'
@@ -44,7 +44,7 @@ export default function LoginPage() {
     }
 
     return (
-        <AppLayout>
+        <AuthLayout>
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
                 <Form {...form}>
                     <h2 className="text-2xl font-bold mb-4 text-center">Welcome Back!</h2>
@@ -133,6 +133,6 @@ export default function LoginPage() {
                     </form>
                 </Form>
             </div>
-        </AppLayout>
+        </AuthLayout>
     )
 }

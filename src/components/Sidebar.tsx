@@ -8,6 +8,7 @@ const navLinks = [
   { to: PATHS.APP.BUDGETS, label: "Budgets" },
   { to: PATHS.APP.TRANSACTIONS, label: "Transactions" },
   { to: PATHS.APP.REPORTS, label: "Reports" },
+  { to: PATHS.APP.PROFILE, label: "Profile" },
 ];
 
 export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
