@@ -6,6 +6,10 @@ const API_ENDPOINTS = {
         PROFILE: '/auth/me/',
     },
     USERS: '/users/',
+    BUDGETS: '/budgets/',
+    CATEGORIES: '/categories/',
+    TRANSACTIONS: '/transactions/',
+    REPORTS: '/reports/'
 } as const;
 
 export default API_ENDPOINTS;
