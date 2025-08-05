@@ -4,6 +4,7 @@ import RegisterPage from "@/pages/Register/page.tsx";
 import { AuthProvider } from '@/contexts/AuthContext';
 import ProtectedRoute from '@/routes/ProtectedRoute';
 import Dashboard from '@/pages/Dashboard/page';
+import ProfilePage from '@/pages/Profile/page';
 import PATHS from '@/routes/paths';
 import { Toaster } from 'sonner';
 import NotFoundPage from '@/pages/NotFound/page.tsx';
@@ -22,6 +23,7 @@ export default function App(){
               <Route path="/register" element={<RegisterPage />} />
               <Route element={<ProtectedRoute />}>
                 <Route path={PATHS.APP.DASHBOARD} element={<Dashboard />} />
+                <Route path={PATHS.APP.PROFILE} element={<ProfilePage />} />
               </Route>
               <Route path="*" element={<NotFoundPage />} />
           </Routes>
