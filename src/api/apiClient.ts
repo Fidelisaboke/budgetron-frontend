@@ -1,4 +1,5 @@
 import axios from "axios";
+import PATHS from "@/routes/paths";
 
 // A client for the API.
 const apiClient = axios.create({
@@ -23,7 +24,7 @@ apiClient.interceptors.response.use(
     (error) => {
         if (error.response.status === 401) {
             localStorage.removeItem("access_token");
-            window.location.href = "/";
+            window.location.href = PATHS.AUTH.LOGIN;
         }
         return Promise.reject(error);
     }
