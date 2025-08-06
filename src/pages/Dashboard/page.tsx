@@ -2,11 +2,10 @@ import AppLayout from "@/components/AppLayout.tsx";
 import { useBudgets } from "@/hooks/useBudgets";
 import { useTransactions } from "@/hooks/useTransactions";
 import { useCategories } from "@/hooks/useCategories";
-import LoadingPage from "@/components/LoadingPage.tsx";
 import {aggregateDashboardMetrics} from "@/utils/dashboardMetrics.ts";
 import { type Transaction } from "@/schemas/transaction.ts";
 import APP_PATHS from "@/routes/paths.ts";
-import {ArrowRightIcon} from "lucide-react";
+import {ArrowRightIcon, Loader2} from "lucide-react";
 
 
 export default function Dashboard() {
@@ -14,14 +13,12 @@ export default function Dashboard() {
     const { data: transactionsData, isLoading: transactionsLoading } = useTransactions();
     const { data: categoriesData, isLoading: categoriesLoading } = useCategories();
 
-    if (budgetsLoading || transactionsLoading || categoriesLoading) {
-        return <LoadingPage />;
-    }
-
     const budgets = budgetsData?.items || [];
     const transactions = transactionsData?.items || [];
     const categories = categoriesData?.items || [];
     const recentTransactions = transactions.slice(0, 3);
+
+    const isLoading = budgetsLoading || transactionsLoading || categoriesLoading;
 
     // Dashboard Metrics
     const metrics = aggregateDashboardMetrics(
@@ -33,10 +30,26 @@ export default function Dashboard() {
     return (
         <AppLayout title={"Dashboard Overview"}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <OverviewCard title={"Total Income"} value={`Ksh. ${metrics.totalIncome.toLocaleString()}`} />
-                <OverviewCard title={"Total Expenses"} value={`Ksh. ${metrics.totalExpenses.toLocaleString()}`} />
-                <OverviewCard title={"Budget Usage"} value={`${metrics.budgetUsage.toFixed(2)}%`} />
-                <OverviewCard title={"Categories"} value={`${metrics.categoryCount}`} />
+                <OverviewCard 
+                    title={"Total Income"} 
+                    isLoading={isLoading}
+                    value={`Ksh. ${metrics.totalIncome.toLocaleString()}`} 
+                />
+                <OverviewCard 
+                    title={"Total Expenses"} 
+                    isLoading={isLoading}
+                    value={`Ksh. ${metrics.totalExpenses.toLocaleString()}`} 
+                />
+                <OverviewCard 
+                    title={"Budget Usage"} 
+                    isLoading={isLoading}
+                    value={`${metrics.budgetUsage.toFixed(2)}%`} 
+                />
+                <OverviewCard 
+                    title={"Categories"} 
+                    isLoading={isLoading}
+                    value={`${metrics.categoryCount}`} 
+                />
             </div>
             <div className="bg-white rounded shadow p-4">
                 <div className="text-lg font-semibold mb-2 text-teal-700">Recent Transactions</div>
@@ -74,11 +87,17 @@ export default function Dashboard() {
     );
 }
 
-function OverviewCard({title, value}: { title: string, value: string }) {
+function OverviewCard({title, isLoading, value}: { title: string, isLoading: boolean, value: string }) {
     return (
         <div className="bg-white rounded shadow p-4">
             <div className="text-gray-500 text-sm">{title}</div>
-            <div className="text-2xl font-bold text-teal-700">{value}</div>
+            {isLoading ? (
+                <Loader2 className="mt-2 text-teal-700 animate-spin" />
+            ) : (
+                <div className="text-2xl font-bold text-teal-700">
+                    {value}
+                </div> 
+            )}
         </div>
     );
 }
