@@ -15,7 +15,7 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (open: bool
   const location = useLocation();
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen">
       {open && (
         <div
         className="fixed inset-0 z-30 md:hidden bg-black/30"
@@ -27,7 +27,7 @@ export function Sidebar({ open, setOpen }: { open: boolean, setOpen: (open: bool
         className={`fixed md:static top-0 left-0 h-full w-48 bg-white border-r shadow-md z-40 transition-transform ${open ? "translate-x-0" : "-translate-x-full"
           } md:translate-x-0 md:block`}
       >
-        <nav className="flex flex-col gap-2 p-4">
+        <nav className="flex flex-col overflow-y-auto gap-2 p-4">
           {navLinks.map((link) => (
             <Link
               key={link.to}
