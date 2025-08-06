@@ -53,7 +53,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(true);
         try {
             const response = await apiClient.get<User>(API_ENDPOINTS.AUTH.PROFILE);
-            console.log(response.data);
             setUser(response.data);
             navigate(PATHS.APP.DASHBOARD);
         } catch (error) {
