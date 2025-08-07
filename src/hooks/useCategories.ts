@@ -2,10 +2,10 @@ import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tansta
 import { fetchCategories, createCategory } from "@/api/categories";
 import { toast } from "sonner";
 
-export function useCategories(page: number, limit: number = 10) {
+export function useCategories(page: number, limit: number = 10, search: string, categoryType: string) {
     return useQuery({
-        queryKey: ["categories", page, limit],
-        queryFn: () => fetchCategories({ page, limit }),
+        queryKey: ["categories", page, limit, search, categoryType],
+        queryFn: () => fetchCategories({ page, limit, search, categoryType }),
         placeholderData: keepPreviousData,
     })
 }
