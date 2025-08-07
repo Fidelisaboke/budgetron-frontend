@@ -26,8 +26,9 @@ export function Paginate({ currentPage, totalPages, onPageChange }: PaginateProp
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
                     <PaginationItem key={pg}>
                     <Button
-                        onClick={() => onPageChange}
+                        onClick={() => onPageChange(pg)}
                         variant="outline"
+                        disabled={pg === currentPage}
                         className={`px-3 py-1 cursor-pointer rounded ${
                             pg === currentPage ? "bg-teal-600 text-white hover:bg-teal-700 hover:text-white": "hover:bg-muted"
                         }`}
