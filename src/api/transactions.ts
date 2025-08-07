@@ -2,8 +2,8 @@ import apiClient from "./apiClient";
 import API_ENDPOINTS from "./apiEndpoints.ts";
 import { type Transaction } from "@/schemas/transaction.ts";
 
-export const fetchTransactions = async () => {
-    const response = await apiClient.get(API_ENDPOINTS.TRANSACTIONS);
+export const fetchTransactions = async ({ page = 1, limit = 10}: { page?: number, limit?: number }) => {
+    const response = await apiClient.get(`${API_ENDPOINTS.TRANSACTIONS}?page=${page}&limit=${limit}`);
     return response.data;
 }
 

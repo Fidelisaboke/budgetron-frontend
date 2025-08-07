@@ -1,11 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { fetchUsers, createUser } from "@/api/users";
 import { toast } from "sonner";
 
-export function useUsers() {
+export function useUsers(page: number, limit: number = 10) {
     return useQuery({
-        queryKey: ["users"],
-        queryFn: fetchUsers,
+        queryKey: ["users", page, limit],
+        queryFn: () => fetchUsers({ page, limit }),
+        placeholderData: keepPreviousData
     });
 }
 
