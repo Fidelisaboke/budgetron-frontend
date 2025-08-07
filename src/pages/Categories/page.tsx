@@ -6,14 +6,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCategories } from "@/hooks/useCategories";
 import type { Category } from "@/schemas/category";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import clsx from 'clsx';
 import { Paginate } from "@/components/pagination/Paginate";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 
 export default function CategoriesPage() {
     const [page, setPage] = useState(1);
     const limit = 10;
-    const [searchQuery, setSearchQuery] = useState("");
+    const [searchInput, setSearchInput] = useState("");
+    const searchQuery = useDebouncedValue(searchInput, 500);
     const [filterType, setFilterType] = useState("all");
 
     const { data: categoriesData, isLoading: categoriesLoading } = useCategories(page, limit, searchQuery, filterType);
@@ -35,8 +37,8 @@ export default function CategoriesPage() {
                     <Input 
                         className="bg-white focus-visible:ring-teal-400 focus-visible:ring-offset-2" 
                         placeholder={"Search..."}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)} 
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)} 
                     />
                     <Button 
                         className="absolute right-0 h-full p-2 bg-transparent text-gray-500 hover:text-gray-700 hover:bg-transparent"
