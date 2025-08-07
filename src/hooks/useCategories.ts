@@ -1,6 +1,7 @@
-import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
-import { fetchCategories, createCategory } from "@/api/categories";
-import { toast } from "sonner";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { fetchCategories, createCategory, updateCategory, deleteCategory } from "@/api/categories";
+import { useAppMutation } from "./useAppMutation";
+import { type Category, type CategoryFormInput } from "@/schemas/category";
 
 export function useCategories(page: number, limit: number = 10, search: string, categoryType: string) {
     return useQuery({
@@ -11,16 +12,25 @@ export function useCategories(page: number, limit: number = 10, search: string, 
 }
 
 export function useCreateCategory() {
-    const queryClient = useQueryClient();
-
-    return useMutation({
+    return useAppMutation<Category, CategoryFormInput>({
         mutationFn: createCategory,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["categories"] });
-            toast.success("Category created successfully.");
-        },
-        onError: (error) => {
-            toast.error(error.message);
-        }
+        queryKey: "categories",
+        successMsg: "Category created successfully.",
+    });
+}
+
+export function useUpdateCategory() {
+    return useAppMutation<Category, {id: number; data: CategoryFormInput }>({
+        mutationFn: updateCategory,
+        queryKey: "categories",
+        successMsg: "Category updated successfully.",
+    });
+}
+
+export function useDeleteCategory() {
+    return useAppMutation<void, number>({
+        mutationFn: deleteCategory,
+        queryKey: "categories",
+        successMsg: "Category deleted successfully.",
     })
 }
