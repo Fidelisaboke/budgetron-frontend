@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tansta
 import { fetchTransactions, createTransaction } from "@/api/transactions";
 import { toast } from "sonner";
 
-export function useTransactions(page: number, limit: number = 10) {
+export function useTransactions(page: number = 1, limit: number = 10) {
     return useQuery({
         queryKey: ["transactions", page, limit],
         queryFn: () => fetchTransactions({ page, limit }),

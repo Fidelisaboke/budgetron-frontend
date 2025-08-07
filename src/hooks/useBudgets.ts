@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tansta
 import { fetchBudgets, createBudget } from "@/api/budgets.ts";
 import { toast } from "sonner";
 
-export function useBudgets(page: number, limit: number = 10) {
+export function useBudgets(page: number = 1, limit: number = 10) {
     return useQuery({
         queryKey: ["budgets", page, limit],
         queryFn: () => fetchBudgets({ page, limit }),
