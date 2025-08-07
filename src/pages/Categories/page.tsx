@@ -6,30 +6,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCategories } from "@/hooks/useCategories";
 import type { Category } from "@/schemas/category";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import clsx from 'clsx';
 import { Paginate } from "@/components/pagination/Paginate";
 
 export default function CategoriesPage() {
     const [page, setPage] = useState(1);
     const limit = 10;
-
-    const { data: categoriesData, isLoading: categoriesLoading } = useCategories(page, limit);
-    const categories = categoriesData?.items || [];
-
     const [searchQuery, setSearchQuery] = useState("");
     const [filterType, setFilterType] = useState("all");
 
-    const filteredCategories = useMemo(() => {
-        return categories.filter((category: Category) => {
-            const matchesSearch = category.name.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesFilter = filterType === "all" || category.type === filterType;
-            return matchesSearch && matchesFilter;
-        })
-    }, [categories, searchQuery, filterType]);
+    const { data: categoriesData, isLoading: categoriesLoading } = useCategories(page, limit, searchQuery, filterType);
+    const categories = categoriesData?.items || [];
 
-    const hasNextPage = Boolean(categoriesData?.next);
-    const hasPrevPage = Boolean(categoriesData?.prev);
+    useEffect(() => {
+        setPage(1);
+    }, [searchQuery, filterType]);
 
     return (
         <AppLayout title={"Categories"}>
@@ -91,14 +83,14 @@ export default function CategoriesPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {filteredCategories.length === 0 ? (
+                            {categories.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={4} className="text-center py-4">
                                         No categories match your search or filter.
                                     </TableCell>
                                 </TableRow>
                             ): (
-                                filteredCategories.map((category: Category) => (
+                                categories.map((category: Category) => (
                                     <TableRow key={category.id}>
                                         <TableCell className="font-medium">
                                             {category.name}
