@@ -8,9 +8,13 @@ import { useCategories } from "@/hooks/useCategories";
 import type { Category } from "@/schemas/category";
 import { useState, useMemo } from "react";
 import clsx from 'clsx';
+import { Paginate } from "@/components/pagination/Paginate";
 
 export default function CategoriesPage() {
-    const { data: categoriesData, isLoading: categoriesLoading } = useCategories();
+    const [page, setPage] = useState(1);
+    const limit = 10;
+
+    const { data: categoriesData, isLoading: categoriesLoading } = useCategories(page, limit);
     const categories = categoriesData?.items || [];
 
     const [searchQuery, setSearchQuery] = useState("");
@@ -23,6 +27,9 @@ export default function CategoriesPage() {
             return matchesSearch && matchesFilter;
         })
     }, [categories, searchQuery, filterType]);
+
+    const hasNextPage = Boolean(categoriesData?.next);
+    const hasPrevPage = Boolean(categoriesData?.prev);
 
     return (
         <AppLayout title={"Categories"}>
@@ -64,55 +71,66 @@ export default function CategoriesPage() {
                     <Loader2 className="animate-spin" />
                 </div>
             ) : (
-                <Table className="bg-white border border-gray-300 rounded-md max-w-4xl">
-                    <TableHeader className="bg-gray-50">
-                        <TableRow>
-                            <TableHead className="w-[200px]">Name</TableHead>
-                            <TableHead>Type</TableHead>
-                            <TableHead>Default?</TableHead>
-                            <TableHead>Actions</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {filteredCategories.length === 0 ? (
+                <div className="space-y-4 w-full max-w-5xl mx-auto">
+                    <div className="flex">
+                        <Paginate
+                            currentPage={page}
+                            totalPages={categoriesData.pages}
+                            onPageChange={setPage}
+                        />
+                    </div>
+
+
+                    <Table className="bg-white border border-gray-300 rounded-md max-w-4xl">
+                        <TableHeader className="bg-gray-50">
                             <TableRow>
-                                <TableCell colSpan={4} className="text-center py-4">
-                                    No categories match your search or filter.
-                                </TableCell>
+                                <TableHead className="w-[200px]">Name</TableHead>
+                                <TableHead>Type</TableHead>
+                                <TableHead>Default?</TableHead>
+                                <TableHead>Actions</TableHead>
                             </TableRow>
-                        ): (
-                            filteredCategories.map((category: Category) => (
-                                <TableRow key={category.id}>
-                                    <TableCell className="font-medium">
-                                        {category.name}
-                                    </TableCell>
-                                    <TableCell>
-                                        <CategoryTypeLabel categoryType={category.type} />
-                                    </TableCell>
-                                    <TableCell>
-                                        {category.is_default ? "Yes" : "No"}
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex gap-2">
-                                            {category.is_default ? (
-                                                <span>-</span>
-                                            ): 
-                                                <>
-                                                    <Button className="bg-blue-600 hover:bg-blue-700">
-                                                        <SquarePenIcon />
-                                                    </Button>
-                                                    <Button className="bg-red-500 hover:bg-red-600">
-                                                        <TrashIcon />
-                                                    </Button>
-                                                </>
-                                            }
-                                        </div>
+                        </TableHeader>
+                        <TableBody>
+                            {filteredCategories.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={4} className="text-center py-4">
+                                        No categories match your search or filter.
                                     </TableCell>
                                 </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
+                            ): (
+                                filteredCategories.map((category: Category) => (
+                                    <TableRow key={category.id}>
+                                        <TableCell className="font-medium">
+                                            {category.name}
+                                        </TableCell>
+                                        <TableCell>
+                                            <CategoryTypeLabel categoryType={category.type} />
+                                        </TableCell>
+                                        <TableCell>
+                                            {category.is_default ? "Yes" : "No"}
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex gap-2">
+                                                {category.is_default ? (
+                                                    <span>-</span>
+                                                ): 
+                                                    <>
+                                                        <Button className="bg-blue-600 hover:bg-blue-700">
+                                                            <SquarePenIcon />
+                                                        </Button>
+                                                        <Button className="bg-red-500 hover:bg-red-600">
+                                                            <TrashIcon />
+                                                        </Button>
+                                                    </>
+                                                }
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
+                </div>
             )}
         </AppLayout>
     );
