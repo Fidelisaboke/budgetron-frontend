@@ -2,8 +2,8 @@ import apiClient from "./apiClient";
 import API_ENDPOINTS from "./apiEndpoints";
 import { type Category } from "@/schemas/category";
 
-export const fetchCategories = async () => {
-    const response = await apiClient.get(API_ENDPOINTS.CATEGORIES);
+export const fetchCategories = async ({ page = 1, limit = 10}: {page?: number, limit?: number}) => {
+    const response = await apiClient.get(`${API_ENDPOINTS.CATEGORIES}?page=${page}&limit=${limit}`);
     return response.data;
 }
 

@@ -1,11 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { fetchTransactions, createTransaction } from "@/api/transactions";
 import { toast } from "sonner";
 
-export function useTransactions() {
+export function useTransactions(page: number, limit: number = 10) {
     return useQuery({
-        queryKey: ["transactions"],
-        queryFn: fetchTransactions,
+        queryKey: ["transactions", page, limit],
+        queryFn: () => fetchTransactions({ page, limit }),
+        placeholderData: keepPreviousData
     });
 }
 

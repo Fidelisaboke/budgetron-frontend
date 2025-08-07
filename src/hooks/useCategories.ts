@@ -1,11 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { fetchCategories, createCategory } from "@/api/categories";
 import { toast } from "sonner";
 
-export function useCategories() {
+export function useCategories(page: number, limit: number = 10) {
     return useQuery({
-        queryKey: ["categories"],
-        queryFn: fetchCategories,
+        queryKey: ["categories", page, limit],
+        queryFn: () => fetchCategories({ page, limit }),
+        placeholderData: keepPreviousData,
     })
 }
 

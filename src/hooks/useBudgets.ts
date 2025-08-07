@@ -1,11 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { fetchBudgets, createBudget } from "@/api/budgets.ts";
 import { toast } from "sonner";
 
-export function useBudgets() {
+export function useBudgets(page: number, limit: number = 10) {
     return useQuery({
-        queryKey: ["budgets"],
-        queryFn: fetchBudgets,
+        queryKey: ["budgets", page, limit],
+        queryFn: () => fetchBudgets({ page, limit }),
+        placeholderData: keepPreviousData,
     })
 }
 
