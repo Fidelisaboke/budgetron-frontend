@@ -1,6 +1,6 @@
 import apiClient from "./apiClient";
 import API_ENDPOINTS from "./apiEndpoints";
-import { type Category } from "@/schemas/category";
+import { type CategoryFormInput } from "@/schemas/category";
 
 export const fetchCategories = async (
     { 
@@ -18,7 +18,17 @@ export const fetchCategories = async (
     return response.data;
 }
 
-export const createCategory = async (category: Category) => {
-    const response = await apiClient.post(API_ENDPOINTS.CATEGORIES, category);
+export const createCategory = async (data: CategoryFormInput) => {
+    const response = await apiClient.post(API_ENDPOINTS.CATEGORIES, data);
+    return response.data;
+}
+
+export const updateCategory = async ({id, data}: { id: number, data: CategoryFormInput }) => {
+    const response = await apiClient.patch(`${API_ENDPOINTS.CATEGORIES}${id}`, data);
+    return response.data;
+}
+
+export const deleteCategory = async (id: number) => {
+    const response = await apiClient.delete(`${API_ENDPOINTS.CATEGORIES}${id}`);
     return response.data;
 }
