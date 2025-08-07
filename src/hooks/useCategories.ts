@@ -3,7 +3,7 @@ import { fetchCategories, createCategory, updateCategory, deleteCategory } from 
 import { useAppMutation } from "./useAppMutation";
 import { type Category, type CategoryFormInput } from "@/schemas/category";
 
-export function useCategories(page: number, limit: number = 10, search: string, categoryType: string) {
+export function useCategories(page: number = 1, limit: number = 10, search: string = "", categoryType: string = "all") {
     return useQuery({
         queryKey: ["categories", page, limit, search, categoryType],
         queryFn: () => fetchCategories({ page, limit, search, categoryType }),
