@@ -6,6 +6,7 @@ import {aggregateDashboardMetrics} from "@/utils/dashboardMetrics.ts";
 import { type Transaction } from "@/schemas/transaction.ts";
 import APP_PATHS from "@/routes/paths.ts";
 import {ArrowRightIcon, Loader2} from "lucide-react";
+import type React from "react";
 
 
 export default function Dashboard() {
@@ -33,23 +34,47 @@ export default function Dashboard() {
                 <OverviewCard 
                     title={"Total Income"} 
                     isLoading={isLoading}
-                    value={`Ksh. ${metrics.totalIncome.toLocaleString()}`} 
-                />
+                >
+                    <div className="text-2xl font-semibold">
+                        {`Ksh. ${metrics.totalIncome.toLocaleString()}`}
+                    </div> 
+                </OverviewCard>
                 <OverviewCard 
                     title={"Total Expenses"} 
                     isLoading={isLoading}
-                    value={`Ksh. ${metrics.totalExpenses.toLocaleString()}`} 
-                />
+                >
+                    <div className="text-2xl font-semibold">
+                        {`Ksh. ${metrics.totalExpenses.toLocaleString()}`}
+                    </div> 
+                </OverviewCard>
+                <OverviewCard 
+                    title={"Total Net Income"} 
+                    isLoading={isLoading}
+                >
+                    {metrics.totalIncome >= 0 ? (
+                        <div className="text-2xl font-semibold text-teal-700">
+                            {`Ksh. ${metrics.totalNetIncome.toLocaleString()}`}
+                        </div> 
+                    ): (
+                        <div className="text-2xl font-semibold text-red-700">
+                            {`Ksh. ${metrics.totalNetIncome.toLocaleString()}`}
+                        </div> 
+                    )}
+                </OverviewCard>
                 <OverviewCard 
                     title={"Budget Usage"} 
                     isLoading={isLoading}
-                    value={`${metrics.budgetUsage.toFixed(2)}%`} 
-                />
-                <OverviewCard 
-                    title={"Categories"} 
-                    isLoading={isLoading}
-                    value={`${metrics.categoryCount}`} 
-                />
+                >
+                    {metrics.budgetUsage < 100 ? (
+                        <div className="text-2xl font-semibold text-teal-700">
+                            {`${metrics.budgetUsage.toFixed(2)}%`}
+                        </div> 
+                    ): (
+                        <div className="text-2xl font-semibold text-red-700">
+                            {`${metrics.budgetUsage.toFixed(2)}%`}
+                        </div> 
+                    )}
+                </OverviewCard>
             </div>
             <div className="bg-white rounded shadow p-4">
                 <div className="text-lg font-semibold mb-2 text-teal-700">Recent Transactions</div>
@@ -87,16 +112,14 @@ export default function Dashboard() {
     );
 }
 
-function OverviewCard({title, isLoading, value}: { title: string, isLoading: boolean, value: string }) {
+function OverviewCard({title, isLoading, children}: { title: string, isLoading: boolean, children: React.ReactNode }) {
     return (
         <div className="bg-white rounded shadow p-4">
             <div className="text-gray-500 text-sm">{title}</div>
             {isLoading ? (
                 <Loader2 className="mt-2 text-teal-700 animate-spin" />
             ) : (
-                <div className="text-2xl font-bold text-teal-700">
-                    {value}
-                </div> 
+                children
             )}
         </div>
     );

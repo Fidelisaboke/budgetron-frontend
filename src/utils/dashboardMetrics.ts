@@ -24,6 +24,9 @@ export function aggregateDashboardMetrics(
         }
     }
 
+    // Total net income
+    const totalNetIncome = totalIncome - totalExpenses;
+
     // Budget usage computation
     const totalBudget = budgets.reduce((sum: number, b: Budget) => sum + b.amount, 0);
     const totalSpent = budgets.reduce((sum: number, b: Budget) => sum + b.spent, 0);
@@ -32,7 +35,7 @@ export function aggregateDashboardMetrics(
     return {
         totalIncome,
         totalExpenses,
+        totalNetIncome,
         budgetUsage,
-        categoryCount: categories.length
     };
 }
